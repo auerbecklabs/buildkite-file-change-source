@@ -22,3 +22,4 @@ steps:
         title: "[buildkite] bump image tag to $BUILDKITE_COMMIT"
         head: buildkite-openapi-$BUILDKITE_BUILD_NUMBER
         base: main
+        dir: $DOCS_REPO
