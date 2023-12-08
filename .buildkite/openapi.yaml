@@ -18,7 +18,7 @@ steps:
   plugins:
     - equinixmetal-buildkite/git-clone:
         repository: git@github.com:auerbecklabs/$DOCS_REPO.git
-    - tylerauerbeck/github-pull-request:
+    - tylerauerbeck/github-pull-request#main:
         title: "[buildkite] bump image tag to $BUILDKITE_COMMIT"
         head: buildkite-openapi-$BUILDKITE_BUILD_NUMBER
         base: main
