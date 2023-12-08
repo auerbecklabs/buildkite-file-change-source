@@ -8,13 +8,19 @@ steps:
   command: |
     cp openapi.json $DOCS_REPO/openapi.json
     cd $DOCS_REPO
-    git config --global user.email "buildkite-tyler@auerbeck.dev"
-    git config --global user.name "buildkite-tyler"
+    git config --local user.email "buildkite-tyler@auerbeck.dev"
+    git config --local user.name "buildkite-tyler"
     git checkout -b buildkite-openapi-$BUILDKITE_BUILD_NUMBER
     git add .
     git commit -m "[buildkite] bump openapi"
-    git push --set-upstream origin buildkite-openapi-$BUILDKITE_BUILD_NUMBER
-    hub pull-request -m "[buildkite] bump openapi spec" --no-edit 
+    git push origin buildkite-openapi-$BUILDKITE_BUILD_NUMBER
+    # hub pull-request -m "[buildkite] bump openapi spec" --no-edit 
   plugins:
     - equinixmetal-buildkite/git-clone:
         repository: git@github.com:auerbecklabs/$DOCS_REPO.git
+    - envato/github-pull-request#v0.4.0:
+        title: "[buildkite] bump image tag to $BUILDKITE_COMMIT"
+        head: buildkite-openapi-$BUILDKITE_BUILD_NUMBER
+        base: main
+    # - jcouyang/hub#1.0:
+    #    os: 'linux'
