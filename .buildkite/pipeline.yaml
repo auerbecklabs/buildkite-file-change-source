@@ -9,4 +9,4 @@ steps:
           - path: "openapi.json"
             label: "Publish OpenAPI Spec"
             config:
-              command: "buildkite-agent pipeline upload .buildkite/openapi.yml"
+              command: "buildkite-agent pipeline upload .buildkite/openapi.yaml"
