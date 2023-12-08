@@ -1,20 +1,12 @@
-env:
-  APP_REPO: "buildkite-file-change-source"
-  DOCS_REPO: "buildkite-file-change-destination"
-
 steps:
-- label: "Push updated OpenAPI spec to docs site"
+
+- label: "Check OpenAPI Spec"
   if: build.branch == 'main'
-  command: |
-    cp openapi.json $DOCS_REPO/openapi.json
-    cd $DOCS_REPO
-    git config --global user.email "buildkite-tyler@auerbeck.dev"
-    git config --global user.name "buildkite-tyler"
-    git checkout -b buildkite-openapi-$BUILDKITE_BUILD_NUMBER
-    git add .
-    git commit -m "[buildkite] bump openapi"
-    git push --set-upstream origin buildkite-openapi-$BUILDKITE_BUILD_NUMBER
-    hub pull-request -m "[buildkite] bump openapi spec" --no-edit 
   plugins:
-    - equinixmetal-buildkite/git-clone:
-        repository: git@github.com:auerbecklabs/$DOCS_REPO.git
+    - monebag/monorepo-diff#v2.5.9:
+        diff: "git diff --name-only HEAD~1"
+        watch:
+          - path: "openapi.json"
+            label: "Publish OpenAPI Spec"
+            config:
+              command: "buildkite-agent pipeline upload .buildkite/openapi.yml"
